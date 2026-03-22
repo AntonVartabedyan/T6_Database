@@ -3,6 +3,7 @@ package main;
 import fileManagement.FileReader;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
@@ -10,7 +11,7 @@ import java.util.List;
 
 public class Application {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         FileReader fileReader = new FileReader();
 
         Scanner input = new Scanner(System.in);
@@ -25,7 +26,11 @@ public class Application {
                     String fileName = commands.get(1);
                     fileReader.readFile(fileName);
                     break;
+                case "close":
+                    System.out.println(fileReader.closeFile());
+                    break;
                 case "exit":
+                    System.out.println("Exiting the program");
                 return;
             }
         }while(true);
