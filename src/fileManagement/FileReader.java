@@ -7,23 +7,20 @@ import java.util.List;
 import java.util.Scanner;
 
 public class FileReader {
-    File file;
-    List<List<String>> info;
+     File file;
+     List<List<String>> info;
     public FileReader(){
     }
-    public void readFile(String fileName) throws IOException {
+    public void readFile(String fileName){
         try{
 
 
-            this.file = new File(fileName);
+            file = new File(fileName);
             Scanner myReader = new Scanner(file);
             String headerLine = myReader.nextLine();
             String[] headerLines = headerLine.split(" ");
             info = new ArrayList<>(headerLines.length);
 
-            for(String word : headerLines){
-                //info.getFirst().add(word);
-            }
             int j = 0;
             while(myReader.hasNextLine()){
                 info.add(new ArrayList<>());
@@ -44,8 +41,12 @@ public class FileReader {
             myReader.close();
 
         } catch (FileNotFoundException e) {
-            if(file.createNewFile()){
-                System.out.println("File created: " + file.getName());
+            try {
+                if(file.createNewFile()){
+                    System.out.println("File created: " + file.getName());
+                }
+            } catch (IOException ex) {
+                throw new RuntimeException(ex);
             }
         } catch (Exception e){
             System.out.println("An error occurred.");
@@ -54,7 +55,7 @@ public class FileReader {
 
     }
 
-    public String closeFile(){
+    public  String closeFile(){
         String endMessage;
         endMessage = "Successfully closed ";
         endMessage += file.getName();

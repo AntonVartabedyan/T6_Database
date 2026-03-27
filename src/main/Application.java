@@ -2,37 +2,40 @@ package main;
 
 import fileManagement.FileReader;
 
-import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Scanner;
-import java.util.List;
+import java.util.*;
 
 public class Application {
 
-    public static void main(String[] args) throws IOException {
-        FileReader fileReader = new FileReader();
+    public static Map<String, Runnable> commandMap;
+    public static FileReader fileReader;
+    public static Scanner input;
 
-        Scanner input = new Scanner(System.in);
-        Scanner fileNameScanner = new Scanner(System.in);
+    public static void main(String[] args) throws IOException {
+        fileReader = new FileReader();
+        List<String> commands = new ArrayList<>();
+        input = new Scanner(System.in);
+        fillCommandMap();
+
+
         do {
             System.out.print("Enter a command: ");
-            String[] processedInput = input.nextLine().split(" ");
-            List<String> commands = new ArrayList<>(Arrays.asList(processedInput));
-
-            switch(commands.getFirst().toLowerCase()){
-                case "open":
-                    String fileName = commands.get(1);
-                    fileReader.readFile(fileName);
-                    break;
-                case "close":
-                    System.out.println(fileReader.closeFile());
-                    break;
-                case "exit":
-                    System.out.println("Exiting the program");
-                return;
-            }
+            String cmd = input.next().toLowerCase();
+            commandMap.get(cmd).run();
         }while(true);
+    }
+
+    public static void fillCommandMap(){
+        commandMap = new HashMap<>();
+        commandMap.put("open", ()->{
+            String fileName = input.next();
+            fileReader.readFile(fileName);
+        });
+        commandMap.put("close", fileReader::closeFile);
+        commandMap.put("exit", Application::exitProgram);
+    }
+
+    public static void exitProgram(){
+        System.exit(0);
     }
 }
