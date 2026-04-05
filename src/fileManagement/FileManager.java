@@ -1,15 +1,14 @@
 package fileManagement;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
-public class FileReader {
+public class FileManager {
      File file;
+     List<String> headerLineVals;
      List<List<String>> info;
-    public FileReader(){
+    public FileManager(){
     }
     public void readFile(String fileName){
         try{
@@ -18,8 +17,8 @@ public class FileReader {
             file = new File(fileName);
             Scanner myReader = new Scanner(file);
             String headerLine = myReader.nextLine();
-            String[] headerLines = headerLine.split(" ");
-            info = new ArrayList<>(headerLines.length);
+            headerLineVals = List.of(headerLine.split(" "));
+            info = new ArrayList<>(headerLineVals.size());
 
             int j = 0;
             while(myReader.hasNextLine()){
@@ -65,5 +64,51 @@ public class FileReader {
             endMessage = "Something went wrong";
         }
         return endMessage;
+    }
+
+    public String save(){
+        try {
+            if(file.delete()){
+                file.createNewFile();
+            }else throw new IOException();
+
+        }catch (IOException e){
+            return "An error occured";
+        }
+        try(PrintWriter writer = new PrintWriter(file)){
+            for (String headerEl : headerLineVals){
+                writer.print(headerEl + " ");
+            }
+            writer.println();
+            for (List<String> line : info){
+                for (String el : line){
+                    writer.print(el + "; ");
+                }
+                writer.println();
+            }
+            writer.close();
+            return "Successfully saved the data in " + file.getName();
+        }catch (IOException e){
+            return "Something went wrong";
+        }
+    }
+
+    public String save(String filename){
+        try(PrintWriter writer = new PrintWriter(new FileWriter(filename))){
+            for (String headerEl : headerLineVals){
+                writer.print(headerEl + " ");
+            }
+            writer.println();
+            for (List<String> line : info){
+                for (String el : line){
+                    writer.print(el + "; ");
+                }
+                writer.println();
+            }
+            writer.close();
+            return "Successfully saved the data in " + filename;
+        }catch (IOException e){
+            return "Something went wrong";
+        }
     }
 }
