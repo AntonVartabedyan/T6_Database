@@ -45,6 +45,82 @@ public class Application {
         commandMap.put("help",  () -> System.out.print(pullUpHelp()));
         commandMap.put("exit", Application::exitProgram);
 
+        commandMap.put("import", ()->{
+            String fileName = input.next();
+            //do function here
+        });
+        commandMap.put("showtables", ()->{
+            //do function here
+        });
+        commandMap.put("describe", ()->{
+            String tableName = input.next();
+            //do function here
+        });
+        commandMap.put("print", ()->{
+            String tableName = input.next();
+            //do function here
+        });
+        commandMap.put("export", ()->{
+            String tableName = input.next();
+            String fileName = input.next();
+            //do function here
+        });
+        commandMap.put("select", ()->{
+            int columnN = input.nextInt();
+            String value = input.next();
+            String tableName = input.next();
+            //do function here
+        });
+        commandMap.put("addcolumn", ()->{
+            String tableName = input.next();
+            String columnName = input.next();
+            String columnType = input.next();
+            //do function here
+        });
+        commandMap.put("update", ()->{
+            String tableName = input.next();
+            int searchColumnN = input.nextInt();
+            String searchValue = input.next();
+            int targetColumnN = input.nextInt();
+            String targetValue = input.next();
+            //do function here
+        });
+        commandMap.put("delete", ()->{
+            String tableName = input.next();
+            int searchColumnN = input.nextInt();
+            String searchValue = input.next();
+            //do function here
+        });
+        commandMap.put("insert", ()->{
+            String tableName = input.next();
+            //do function here
+        });
+        commandMap.put("innerjoin", ()->{
+            String tableName1 = input.next();
+            int column1 = input.nextInt();
+            String tableName2 = input.next();
+            int column2 = input.nextInt();
+            //do function here
+        });
+        commandMap.put("rename", ()->{
+            String tableName = input.next();
+            String tableNamenew = input.next();
+            //do function here
+        });
+        commandMap.put("count", ()->{
+            String tableName = input.next();
+            int searchColumnN = input.nextInt();
+            String searchValue = input.next();
+            //do function here
+        });
+        commandMap.put("aggregate", ()->{
+            String tableName = input.next();
+            int searchColumnN = input.nextInt();
+            String searchValue = input.next();
+            int targetColumnN = input.nextInt();
+            String operation = input.next();
+            //do function here
+        });
     }
 
     public static String pullUpHelp(){
