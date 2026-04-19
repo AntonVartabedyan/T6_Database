@@ -11,18 +11,21 @@ public class Application {
     public static FileManager fileManager;
     public static Scanner input;
 
+    static List<String> commands;
+
     public static void main(String[] args) throws IOException {
         fileManager = new FileManager();
-        List<String> commands = new ArrayList<>();
         input = new Scanner(System.in);
         fillCommandMap();
 
 
+
         do {
             System.out.print("Enter a command: ");
-            String cmd = input.next().toLowerCase();
+            String cmdLine = input.nextLine();
+            commands = List.of(cmdLine.split(" "));
             try{
-                commandMap.get(cmd).run();
+                commandMap.get(commands.getFirst().toLowerCase()).run();
             }catch (NullPointerException E){
                 System.out.println("Invalid command! For a list of commands type 'help'.");
             }
@@ -33,92 +36,103 @@ public class Application {
     public static void fillCommandMap(){
         commandMap = new HashMap<>();
         commandMap.put("open", ()->{
-            String fileName = input.next();
+            String fileName = commands.get(1);
             fileManager.readFile(fileName);
         });
         commandMap.put("close", fileManager::closeFile);
-        commandMap.put("save",  fileManager::save);
-        commandMap.put("saveas",  ()->{
-            String fileName = input.next();
+        commandMap.put("save",  ()->{
+            if(commands.size() >= 2 && commands.get(1).equals("as")){
+                commandMap.get("save as").run();
+            }else{
+                fileManager.save();
+            }
+        });
+        commandMap.put("save as",  ()->{
+            String fileName = commands.get(2);
             System.out.println(fileManager.save(fileName));
         });
         commandMap.put("help",  () -> System.out.print(pullUpHelp()));
         commandMap.put("exit", Application::exitProgram);
 
         commandMap.put("import", ()->{
-            String fileName = input.next();
+            String fileName = commands.get(1);
             //do function here
         });
         commandMap.put("showtables", ()->{
             //do function here
         });
         commandMap.put("describe", ()->{
-            String tableName = input.next();
+            String tableName = commands.get(1);
             //do function here
         });
         commandMap.put("print", ()->{
-            String tableName = input.next();
+            String tableName = commands.get(1);
             //do function here
         });
         commandMap.put("export", ()->{
-            String tableName = input.next();
-            String fileName = input.next();
+            String tableName = commands.get(1);
+            String fileName = commands.get(2);
             //do function here
         });
         commandMap.put("select", ()->{
-            int columnN = input.nextInt();
-            String value = input.next();
-            String tableName = input.next();
+            int columnN = Integer.parseInt(commands.get(1));
+            String value = commands.get(2);
+            String tableName = commands.get(3);
             //do function here
         });
         commandMap.put("addcolumn", ()->{
-            String tableName = input.next();
-            String columnName = input.next();
-            String columnType = input.next();
+            String tableName = commands.get(1);
+            String columnName = commands.get(2);
+            String columnType = commands.get(3);
             //do function here
         });
         commandMap.put("update", ()->{
-            String tableName = input.next();
-            int searchColumnN = input.nextInt();
-            String searchValue = input.next();
-            int targetColumnN = input.nextInt();
-            String targetValue = input.next();
+            String tableName = commands.get(1);
+            int searchColumnN = Integer.parseInt(commands.get(2));
+            String searchValue = commands.get(3);
+            int targetColumnN =Integer.parseInt(commands.get(4));
+            String targetValue = commands.get(5);
             //do function here
         });
         commandMap.put("delete", ()->{
-            String tableName = input.next();
-            int searchColumnN = input.nextInt();
-            String searchValue = input.next();
+            String tableName = commands.get(1);
+            int searchColumnN = Integer.parseInt(commands.get(2));
+            String searchValue = commands.get(3);
             //do function here
         });
         commandMap.put("insert", ()->{
-            String tableName = input.next();
+            String tableName = commands.get(1);
+            List<String> collumns = new ArrayList<>();
+            for (int i = 2; i < commands.size(); i++)
+            {
+                collumns.add(commands.get(i));
+            }
             //do function here
         });
         commandMap.put("innerjoin", ()->{
-            String tableName1 = input.next();
-            int column1 = input.nextInt();
-            String tableName2 = input.next();
-            int column2 = input.nextInt();
+            String tableName1 = commands.get(1);
+            int column1 = Integer.parseInt(commands.get(2));
+            String tableName2 = commands.get(3);
+            int column2 = Integer.parseInt(commands.get(4));
             //do function here
         });
         commandMap.put("rename", ()->{
-            String tableName = input.next();
-            String tableNamenew = input.next();
+            String tableName = commands.get(1);
+            String tableNamenew = commands.get(2);
             //do function here
         });
         commandMap.put("count", ()->{
-            String tableName = input.next();
-            int searchColumnN = input.nextInt();
-            String searchValue = input.next();
+            String tableName = commands.get(1);
+            int searchColumnN = Integer.parseInt(commands.get(2));
+            String searchValue = commands.get(3);
             //do function here
         });
         commandMap.put("aggregate", ()->{
-            String tableName = input.next();
-            int searchColumnN = input.nextInt();
-            String searchValue = input.next();
-            int targetColumnN = input.nextInt();
-            String operation = input.next();
+            String tableName = commands.get(1);
+            int searchColumnN = Integer.parseInt(commands.get(2));
+            String searchValue = commands.get(3);
+            int targetColumnN = Integer.parseInt(commands.get(4));
+            String operation = commands.get(5);
             //do function here
         });
     }
