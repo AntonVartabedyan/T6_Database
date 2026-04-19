@@ -6,36 +6,24 @@ import java.util.Scanner;
 
 public class FileManager {
      File file;
+     List<String> tables = new ArrayList<>();
+
      List<String> headerLineVals;
      List<List<String>> info;
     public FileManager(){
     }
     public void readFile(String fileName){
         try{
-
-
             file = new File(fileName);
+            tables = new ArrayList<>();
             Scanner myReader = new Scanner(file);
-            String headerLine = myReader.nextLine();
-            headerLineVals = List.of(headerLine.split(" "));
-            info = new ArrayList<>(headerLineVals.size());
 
-            int j = 0;
             while(myReader.hasNextLine()){
-                info.add(new ArrayList<>());
-                String data = myReader.nextLine();
-                String[] dataPieces = data.split("(; )|;");
-                for (int i = 0; i < dataPieces.length; i++){
-                    if (dataPieces[i].isEmpty() || dataPieces[i].equals(" ")){
-                        dataPieces[i] = null;
-                        System.out.println("NULL");
-                        info.get(j).add(null);
-                        continue;
-                    }
-                    System.out.println(dataPieces[i]);
-                    info.get(j).add(dataPieces[i]);
-                }
-                j++;
+                tables.add(myReader.nextLine());
+            }
+
+            for (int i = 0; i < tables.size(); i++){
+                System.out.println(tables.get(i));
             }
             myReader.close();
 
