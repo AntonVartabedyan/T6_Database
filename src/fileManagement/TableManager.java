@@ -1,7 +1,8 @@
 package fileManagement;
 
+import exceptions.OperationOnStringException;
 import fileManagement.TableElement.Table;
-import main.Application;
+import main.*;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -65,16 +66,21 @@ public class TableManager{
             } catch (FileNotFoundException e) {
                 try {
                     if(file.createNewFile()){
-                        Application.displayMessage("File created: " + file.getName());
-                        tables.put(file.getName(), new Table(file.getName(), 0, new ArrayList<>(), new ArrayList<>(), new ArrayList<>()));
+                        Application.displayMessage("File created: " + file.getName().substring(0,file.getName().length()-4));
+                        tables.put(file.getName().substring(0,file.getName().length()-4), new Table(file.getName().substring(0,file.getName().length()-4)));
                     }
                 } catch (IOException ex) {
                     throw new RuntimeException(ex);
                 }
             } catch (Exception e){
-               Application.displayMessage("An error occurred.");
-                e.printStackTrace();
-                throw new RuntimeException(e);
+                try {
+                    if(file.createNewFile()){
+                        Application.displayMessage("File created: " + file.getName().substring(0,file.getName().length()-4));
+                        tables.put(file.getName().substring(0,file.getName().length()-4), new Table(file.getName().substring(0,file.getName().length()-4)));
+                    }
+                } catch (IOException ex) {
+                    throw new RuntimeException(ex);
+                }
             }
         }
         /*
@@ -122,10 +128,184 @@ public class TableManager{
     }
 
     public void describe(String fileName){
-        Application.displayMessage(tables.get(fileName).getTypesRow());
+        Application.displayMessage(getWholeTable(fileName).getTypesRow());
     }
 
     public List<String> getTable(String fileName){
-        return List.of(tables.get(fileName).toString().split("\n"));
+        return List.of(getWholeTable(fileName).toString().split("\n"));
+    }
+
+    public void export(String tableName, String fileName){
+        Table table = getWholeTable(tableName);
+        try{
+            File currentFile = new File(fileName);
+            if(currentFile.delete()){
+                currentFile.createNewFile();
+            }
+            PrintWriter writer = new PrintWriter(currentFile);
+            writer.print(table);
+            writer.close();
+            Application.displayMessage("Exported table " + table.getTableName());
+        }catch (IOException e){
+            Application.displayMessage("An error occured");
+            return;
+        }
+    }
+
+    public List<List<String>> select(int columnN, String value, String tableName) {
+        Table table = getWholeTable(tableName);
+        if (table.getColumnCount() < columnN - 1) return new ArrayList<>();
+        List<List<String>> answers = new ArrayList<>();
+        for (int i = 0; i < table.getValues().size(); i++){
+            if (table.getValues().get(i).get(columnN-1).equalsIgnoreCase("NULL") && !value.equalsIgnoreCase("null")) continue;
+            if( table.getValues().get(i).get(columnN-1).equals(value)){
+                answers.add(table.getValues().get(i));
+            }
+        }
+        return answers;
+    }
+
+    public void addColumn(String tableName, String columnName, String columnType) {
+        Table table = getWholeTable(tableName);
+        table.addColumn(columnName,columnType);
+    }
+
+    public void update(String tableName, int searchColumnN, String searchValue, int targetColumnN, String targetValue) {
+        Table table = getWholeTable(tableName);
+        if (table.getColumnCount() < searchColumnN - 1) return;
+        for (int i = 0; i < table.getValues().size(); i++){
+            if (table.getValues().get(i).get(searchColumnN-1).equalsIgnoreCase("NULL") && !searchValue.equalsIgnoreCase("null")) continue;
+            if( table.getValues().get(i).get(searchColumnN-1).equals(searchValue)){
+                table.setValue(i,targetColumnN-1,targetValue);
+            }
+        }
+
+    }
+
+    public void remove(String tableName, int searchColumnN, String searchValue) {
+        Table table = getWholeTable(tableName);
+        if (table.getColumnCount() < searchColumnN - 1) return;
+        for (int i = 0; i < table.getValues().size(); i++){
+            if (table.getValues().get(i).get(searchColumnN-1).equalsIgnoreCase("NULL") && !searchValue.equalsIgnoreCase("null")) continue;
+            if( table.getValues().get(i).get(searchColumnN-1).equals(searchValue)){
+                table.removeValue(i);
+            }
+        }
+
+    }
+
+    public void insert(String tableName, List<String> columns){
+        Table table = getWholeTable(tableName);
+        List<String> vals = new ArrayList<>(); // re-adding them to a list to avoid error when user enters too many values
+        for (int i = 0; i < table.getColumnCount(); i++){
+            vals.add(columns.get(i));
+        }
+        table.setRow(vals);
+    }
+
+    public void rename(String oldName, String newName) {
+
+        Table table = getWholeTable(oldName);
+        table.setTableName(newName);
+        tables.remove(oldName);
+        tables.put(newName, table);
+    }
+
+    public int count(String tableName, int searchColumnN, String searchValue) {
+        Table table = getWholeTable(tableName);
+        if (table.getColumnCount() < searchColumnN - 1) return 0;
+        int counter = 0;
+        for (int i = 0; i < table.getValues().size(); i++){
+            if (table.getValues().get(i).get(searchColumnN-1).equalsIgnoreCase("NULL") && !searchValue.equalsIgnoreCase("null")) continue;
+            if( table.getValues().get(i).get(searchColumnN-1).equals(searchValue)){
+                counter++;
+            }
+        }
+        return counter;
+    }
+
+    public String innerJoin(String tableName1, int column1, String tableName2, int column2) {
+        Table table1 = getWholeTable(tableName1);
+        Table table2 = getWholeTable(tableName2);
+        if (table1.getColumnCount() < column1 - 1 || table2.getColumnCount() < column2 - 1) return "Column number exceeds total columns!";
+
+        String newTableName = tableName1+"_JOIN_" + tableName2;
+
+        List<String> combinedTypes = new ArrayList<>();
+        combinedTypes.addAll(table1.getTypesRowList());
+        combinedTypes.addAll(table2.getTypesRowList());
+
+        List<String> combinedHeaderValues = new ArrayList<>();
+        combinedHeaderValues.addAll(table1.getHeaderValues());
+        combinedHeaderValues.addAll(table2.getHeaderValues());
+
+        Table newTable = new Table(newTableName, table1.getColumnCount() + table2.getColumnCount(), combinedTypes, combinedHeaderValues, new ArrayList<>());
+        List<List<String>> answers = new ArrayList<>();
+        for (List<String> vals1: table1.getValues()){
+            for (List<String> vals2 : table2.getValues()){
+                if(vals1.get(column1 - 1).equals(vals2.get(column2- 1))){
+                    List<String> combinedRow = new ArrayList<>();
+                    combinedRow.addAll(vals1);
+                    combinedRow.addAll(vals2);
+                    answers.add(combinedRow);
+                }
+            }
+        }
+        newTable.setValues(answers);
+        tables.put(newTableName, newTable);
+        return newTableName;
+    }
+    public float aggregate(String tableName, int searchColumn, String value, int targetColumn, Operation operation) {
+        Table table = getWholeTable(tableName);
+        if (table.getColumnCount() < searchColumn - 1) return 0;
+        if(table.getHeaderValues().get(targetColumn-1).equals("String")){
+            throw new OperationOnStringException();
+        }
+
+        float answers = 0;
+        boolean firstOp = true;
+        for (int i = 0; i < table.getValues().size(); i++){
+            if (table.getValues().get(i).get(searchColumn-1).equalsIgnoreCase("NULL") && !value.equalsIgnoreCase("null")) continue;
+            if( table.getValues().get(i).get(searchColumn-1).equals(value)){
+                if (table.getValues().get(i).get(targetColumn-1).equalsIgnoreCase("null")) continue;
+                switch (operation){
+                    case Operation.SUM:
+                        answers += Float.parseFloat(table.getValues().get(i).get(targetColumn-1));
+                        break;
+                    case Operation.PRODUCT:
+                        if(firstOp){
+                            firstOp = false;
+                            answers = 1;
+                        }
+                        answers *= Float.parseFloat(table.getValues().get(i).get(targetColumn-1));
+                        break;
+                    case Operation.MAXIMUM:
+                        if(firstOp){
+                            firstOp = false;
+                            answers = Float.parseFloat(table.getValues().get(i).get(targetColumn-1));
+                            break;
+                        }
+                        answers = Math.max(answers, Float.parseFloat(table.getValues().get(i).get(targetColumn-1)));
+                        break;
+                    case Operation.MINIMUM:
+                        if(firstOp){
+                            firstOp = false;
+                            answers = Float.parseFloat(table.getValues().get(i).get(targetColumn-1));
+                            break;
+                        }
+                        answers = Math.min(answers, Float.parseFloat(table.getValues().get(i).get(targetColumn-1)));
+                        break;
+                }
+            }
+        }
+        return answers;
+    }
+
+    public Table getWholeTable(String name) {
+        Table table = tables.get(name);
+        return table;
+    }
+    public boolean findIfTableExists(String name){
+        return tables.get(name) != null;
     }
 }

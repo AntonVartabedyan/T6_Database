@@ -13,7 +13,17 @@ public class Paginator {
     }
 
     public void setRows(List<String> rows) {
+        clearPaginator();
         this.rows = rows;
+    }
+
+    public void setRowsForSelect(List<List<String>> rows) {
+        clearPaginator();
+        List<String> newRows = new ArrayList<>();
+        for (List<String>row: rows){
+            newRows.add(String.join("; ", row));
+        }
+        this.rows = newRows;
     }
 
     public String loadPage(int page){

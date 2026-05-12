@@ -1,6 +1,6 @@
 package fileManagement;
-import fileManagement.TableElement.Table;
 import main.Application;
+import exceptions.ExistingFileException;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -98,12 +98,28 @@ public class CatalogueManager{
     }
 
     public void importTable(String fileName){
-        fileNames.add(fileName);
+        for (String fName : fileNames){
+            if(fName.equals(fileName)) return;
+        }
+        fileNames.add(fileName + ".tbl");
     }
 
     public void showTables(){
         for (String fileName : fileNames){
             Application.displayMessage(fileName);
+        }
+    }
+
+    public void rename(String oldName, String newName){
+        for(String val: fileNames){
+            if(val.equals(newName)){
+                throw new ExistingFileException(newName);
+            }
+        }
+        for (int i = 0; i < fileNames.size(); i++){
+            if(fileNames.get(i).equals(oldName + ".tbl")){
+                fileNames.set(i, newName + ".tbl");
+            }
         }
     }
 }
