@@ -23,14 +23,14 @@ public class TableManager{
     protected File file;
     protected Map<String, Table> tables = new HashMap<>();
 
-    public void readFile(List<String> fileNames){
+    public void readFile(List<String> fileNames, String fileLocation){
         tables.clear();
         for (String fileName : fileNames){
             if(!fileName.endsWith(".tbl")){
                 continue;
             }
             try{
-                file = new File(fileName);
+                file = new File( fileLocation + fileName);
                 Scanner myReader = new Scanner(file);
 
                 String tableName = myReader.nextLine();
@@ -90,30 +90,23 @@ public class TableManager{
         */
     }
 
-    public  void closeFile(){
-        String endMessage;
-        endMessage = "Successfully closed ";
-        endMessage += file.getName();
-        try{
-            file = null;
-            tables.clear();
-        }catch (Exception e){
-            endMessage = "Something went wrong";
-        }
-        Application.displayMessage(endMessage);
+    public void close(){
+        this.tables.clear();
+        file = null;
     }
 
-    public void save() {
+    public void save(String fileLocation) {
         for (var table : tables.entrySet()){
             try{
-                File currentFile = new File((file.getParent() == null ? "" : file.getParent() + "\\") + table.getValue().getTableName() + ".tbl");
+                File currentFile = new File(fileLocation + table.getKey() + ".tbl");
                 if(currentFile.delete()){
                     currentFile.createNewFile();
                 }
                 PrintWriter writer = new PrintWriter(currentFile);
-                writer.print(table.getValue());
+                writer.print(tables.get(table.getKey()));
                 writer.close();
-                Application.displayMessage("Saved table " + table.getValue().getTableName());
+                Application.displayMessage("Saved table " + table.getKey());
+
             }catch (IOException e){
                 Application.displayMessage("An error occured");
                 return;
@@ -122,9 +115,9 @@ public class TableManager{
         }
     }
 
-    public void save(String filename) {
+    public void save(String filename, String fileLocation) {
         file = new File(filename);
-        save();
+        save(fileLocation);
     }
 
     public void describe(String fileName){

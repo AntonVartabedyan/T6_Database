@@ -2,9 +2,9 @@ gradove
 5
 int String float string String 
 newCol Value newCol something testingLast 
-1; Varna; NULL; NULL; NULL; 
+1; Varna; 1; NULL; NULL; 
 2; Burgas; 15; NULL; NULL; 
-3; Plovdiv; NULL; NULL; NULL; 
-4; Sofia; NULL; NULL; NULL; 
+3; Plovdiv; 1; NULL; NULL; 
 6; Ruse; -2.51; NULL; NULL; 
 7; Vana; +5.123; NULL; NULL; 
+4; Sofia; 1; NULL; NULL; 

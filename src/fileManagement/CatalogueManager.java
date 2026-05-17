@@ -10,6 +10,7 @@ import java.util.Scanner;
 public class CatalogueManager{
      protected File file;
      protected List<String> fileNames = new ArrayList<>();
+     public boolean isFileOpened = false;
 
 
     public CatalogueManager(){
@@ -34,24 +35,27 @@ public class CatalogueManager{
                 if(file.createNewFile()){
                     Application.displayMessage("File created: " + file.getName());
                 }
-            } catch (IOException ex) {
-                throw new RuntimeException(ex);
+            } catch (Exception ex) {
+                Application.displayMessage("An error occurred.");
+                ex.printStackTrace();
             }
         } catch (Exception e){
             Application.displayMessage("An error occurred.");
             e.printStackTrace();
         }
-
+        this.isFileOpened = true;
         return fileName;
     }
 
     public  void closeFile(){
         String endMessage;
         try{
+            String fileName = file.getName();
             file = null;
             fileNames.clear();
             endMessage = "Successfully closed ";
-            endMessage += file.getName();
+            endMessage += fileName;
+            this.isFileOpened = false;
         }catch (Exception e){
             endMessage = "Something went wrong";
         }
@@ -88,7 +92,7 @@ public class CatalogueManager{
         file = new File(fileName);
         try(PrintWriter writer = new PrintWriter(new FileWriter(fileName))){
             for (String tableName : fileNames){
-                writer.println((file.getParent() == null ? "" : file.getParent() + "\\") + tableName);
+                writer.println(tableName);
             }
             writer.close();
             Application.displayMessage( "Successfully saved the data in " + fileName);
@@ -121,5 +125,9 @@ public class CatalogueManager{
                 fileNames.set(i, newName + ".tbl");
             }
         }
+    }
+
+    public String getFileLocation(){
+        return (file.getParent() == null ? "" : file.getParent() + "\\");
     }
 }
