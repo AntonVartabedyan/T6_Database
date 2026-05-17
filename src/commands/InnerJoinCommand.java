@@ -6,7 +6,9 @@ import main.Application;
 import main.Controller;
 
 import java.util.List;
-
+/**
+ * Command class to join two tables depending on their columns
+ */
 public class InnerJoinCommand implements CommandInterface{
     private TableManager tableManager;
     private CatalogueManager catalogueManager;

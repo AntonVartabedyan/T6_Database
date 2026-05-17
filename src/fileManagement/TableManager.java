@@ -10,6 +10,10 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.*;
 
+/**
+ * Table manager manages all the tables in a map with a key being their name
+ */
+
 public class TableManager{
     /*
     * Table Template:
@@ -22,6 +26,12 @@ public class TableManager{
     */
     protected File file;
     protected Map<String, Table> tables = new HashMap<>();
+
+    /**
+     * Function that takes the table names and creates the table datas in tables
+     * @param fileNames
+     * @param fileLocation
+     */
 
     public void readFile(List<String> fileNames, String fileLocation){
         tables.clear();
@@ -90,10 +100,19 @@ public class TableManager{
         */
     }
 
+    /**
+     * Function for removing the tables
+     */
+
     public void close(){
         this.tables.clear();
         file = null;
     }
+
+    /**
+     * Function for saving the files
+     * @param fileLocation
+     */
 
     public void save(String fileLocation) {
         for (var table : tables.entrySet()){
@@ -115,18 +134,39 @@ public class TableManager{
         }
     }
 
+    /**
+     *  Function for saving the files in a new location
+     * @param filename
+     * @param fileLocation
+     */
     public void save(String filename, String fileLocation) {
         file = new File(filename);
         save(fileLocation);
     }
 
+    /**
+     * Function for printing out the types of a speciffic table
+     * @param fileName
+     */
     public void describe(String fileName){
         Application.displayMessage(getWholeTable(fileName).getTypesRow());
     }
 
+    /**
+     * Function for getting all of the table names
+     * @param fileName
+     * @return
+     */
+
     public List<String> getTable(String fileName){
         return List.of(getWholeTable(fileName).toString().split("\n"));
     }
+
+    /**
+     * Function for exporting the table data into a file in the database
+     * @param tableName
+     * @param fileName
+     */
 
     public void export(String tableName, String fileName){
         Table table = getWholeTable(tableName);
@@ -145,6 +185,14 @@ public class TableManager{
         }
     }
 
+    /**
+     * Function for giving the result of all rows that correspond to the value
+     * @param columnN
+     * @param value
+     * @param tableName
+     * @return
+     */
+
     public List<List<String>> select(int columnN, String value, String tableName) {
         Table table = getWholeTable(tableName);
         if (table.getColumnCount() < columnN - 1) return new ArrayList<>();
@@ -158,10 +206,26 @@ public class TableManager{
         return answers;
     }
 
+    /**
+     * Function for adding a column to the table
+     * @param tableName
+     * @param columnName
+     * @param columnType
+     */
+
     public void addColumn(String tableName, String columnName, String columnType) {
         Table table = getWholeTable(tableName);
         table.addColumn(columnName,columnType);
     }
+
+    /**
+     * Function for updating all cells in rows that correspond to the searchValue in searchColumnN
+     * @param tableName
+     * @param searchColumnN
+     * @param searchValue
+     * @param targetColumnN
+     * @param targetValue
+     */
 
     public void update(String tableName, int searchColumnN, String searchValue, int targetColumnN, String targetValue) {
         Table table = getWholeTable(tableName);
@@ -175,6 +239,13 @@ public class TableManager{
 
     }
 
+    /**
+     * Function for removing all rows that correspond to the searchValue in searchColumnN
+     * @param tableName
+     * @param searchColumnN
+     * @param searchValue
+     */
+
     public void remove(String tableName, int searchColumnN, String searchValue) {
         Table table = getWholeTable(tableName);
         if (table.getColumnCount() < searchColumnN - 1) return;
@@ -187,6 +258,11 @@ public class TableManager{
 
     }
 
+    /**
+     * Function for inserting a new row into table
+     * @param tableName
+     * @param columns
+     */
     public void insert(String tableName, List<String> columns){
         Table table = getWholeTable(tableName);
         List<String> vals = new ArrayList<>(); // re-adding them to a list to avoid error when user enters too many values
@@ -196,6 +272,11 @@ public class TableManager{
         table.setRow(vals);
     }
 
+    /**
+     * Function for renaming the table
+     * @param oldName
+     * @param newName
+     */
     public void rename(String oldName, String newName) {
 
         Table table = getWholeTable(oldName);
@@ -203,6 +284,14 @@ public class TableManager{
         tables.remove(oldName);
         tables.put(newName, table);
     }
+
+    /**
+     * Function for returning the counter of all cells that correspond to searchValue in searchColumnN
+     * @param tableName
+     * @param searchColumnN
+     * @param searchValue
+     * @return
+     */
 
     public int count(String tableName, int searchColumnN, String searchValue) {
         Table table = getWholeTable(tableName);
@@ -216,6 +305,15 @@ public class TableManager{
         }
         return counter;
     }
+
+    /**
+     * Function for joining two tables on the basis of the selected columns
+     * @param tableName1
+     * @param column1
+     * @param tableName2
+     * @param column2
+     * @return
+     */
 
     public String innerJoin(String tableName1, int column1, String tableName2, int column2) {
         Table table1 = getWholeTable(tableName1);
@@ -248,6 +346,16 @@ public class TableManager{
         tables.put(newTableName, newTable);
         return newTableName;
     }
+
+    /**
+     * Function for executing operations depending on rows that correspond to searchValue in searchColumnN
+     * @param tableName
+     * @param searchColumn
+     * @param value
+     * @param targetColumn
+     * @param operation
+     * @return
+     */
     public float aggregate(String tableName, int searchColumn, String value, int targetColumn, Operation operation) {
         Table table = getWholeTable(tableName);
         if (table.getColumnCount() < searchColumn - 1) return 0;
@@ -294,10 +402,22 @@ public class TableManager{
         return answers;
     }
 
+    /**
+     * Function for getting a speciffic table
+     * @param name
+     * @return
+     */
+
     public Table getWholeTable(String name) {
         Table table = tables.get(name);
         return table;
     }
+
+    /**
+     * Function for finding if the database is empty or not
+     * @param name
+     * @return
+     */
     public boolean findIfTableExists(String name){
         return tables.get(name) != null;
     }

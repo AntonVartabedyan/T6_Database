@@ -5,7 +5,9 @@ import fileManagement.TableManager;
 import main.Controller;
 
 import java.util.List;
-
+/**
+ * Command class to show all table names in the database
+ */
 public class ShowTablesCommand implements CommandInterface{
     private CatalogueManager catalogueManager;
 

@@ -6,7 +6,9 @@ import main.Application;
 import main.Controller;
 
 import java.util.List;
-
+/**
+ * Command class to import a table into database
+ */
 public class ImportCommand implements CommandInterface{
     private TableManager tableManager;
     private CatalogueManager catalogueManager;

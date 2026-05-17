@@ -6,7 +6,9 @@ import main.Application;
 import main.Controller;
 
 import java.util.List;
-
+/**
+ * Command class exit the program
+ */
 public class ExitCommand implements CommandInterface{
 
     public ExitCommand(){

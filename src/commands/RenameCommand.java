@@ -6,7 +6,9 @@ import main.Application;
 import main.Controller;
 
 import java.util.List;
-
+/**
+ * Command class to rename a file
+ */
 public class RenameCommand implements CommandInterface{
     private TableManager tableManager;
     private CatalogueManager catalogueManager;

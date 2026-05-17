@@ -4,7 +4,9 @@ import fileManagement.CatalogueManager;
 import fileManagement.TableManager;
 
 import java.util.List;
-
+/**
+ * Command class to close the table and database sheets and wipe all data
+ */
 public class CloseCommand implements CommandInterface{
     private CatalogueManager catalogueManager;
     private TableManager tableManager;

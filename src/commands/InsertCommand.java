@@ -7,7 +7,9 @@ import main.Controller;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * Command class to insert a row into a table
+ */
 public class InsertCommand implements CommandInterface{
     private TableManager tableManager;
     private List<String> commands;

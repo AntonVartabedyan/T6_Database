@@ -8,7 +8,9 @@ import pagination.Paginator;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * Command class to print out results of a check
+ */
 public class SelectCommand implements CommandInterface{
     private TableManager tableManager;
     private List<String> commands;

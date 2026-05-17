@@ -6,7 +6,9 @@ import main.Application;
 import main.Controller;
 
 import java.util.List;
-
+/**
+ * Command class to do describe what types each column uses
+ */
 public class DescribeCommand implements CommandInterface{
     private TableManager tableManager;
     private List<String> commands;

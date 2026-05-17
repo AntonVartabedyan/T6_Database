@@ -7,7 +7,9 @@ import main.Controller;
 import main.Operation;
 
 import java.util.List;
-
+/**
+ * Command class to do operations under circumstances
+ */
 public class AggregateCommand implements CommandInterface{
     private TableManager tableManager;
     private List<String> commands;

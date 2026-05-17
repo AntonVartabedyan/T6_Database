@@ -1,5 +1,7 @@
 package commands;
-
+/**
+ * Enum that contains all commands
+ */
 public enum CommandEnum {
     OPEN,
     CLOSE,

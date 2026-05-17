@@ -20,6 +20,9 @@ public class Controller {
         this.init();
     }
 
+    /**
+     * Sets up the main loop for commands
+     */
     private void init(){
         tableManager = new TableManager();
         catalogueManager = new CatalogueManager();
@@ -59,6 +62,10 @@ public class Controller {
         }while(true);
     }
 
+    /**
+     * Function for filling out the command map with appropriate classes
+     */
+
     public void fillCommandMap(){
         commandMap = new HashMap<>();
         commandMap.put(CommandEnum.OPEN, new OpenCommand(tableManager, catalogueManager));
@@ -85,7 +92,10 @@ public class Controller {
         commandMap.put(CommandEnum.NEXT, new NextCommand(paginator));
     }
 
-
+    /**
+     * function for getting the typed command, mainly used for the command classes
+     * @return
+     */
     public static List<String> getCommands() {
         return commands;
     }

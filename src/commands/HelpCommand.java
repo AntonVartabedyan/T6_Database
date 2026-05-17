@@ -8,7 +8,9 @@ import pagination.Paginator;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * Command class to pull up the help menu
+ */
 public class HelpCommand implements CommandInterface{
     private Paginator paginator;
 

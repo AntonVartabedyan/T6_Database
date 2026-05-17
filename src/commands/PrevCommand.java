@@ -8,7 +8,9 @@ import pagination.Paginator;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * Command class to go to previous page in the paginator
+ */
 public class PrevCommand implements CommandInterface{
     private Paginator paginator;
 

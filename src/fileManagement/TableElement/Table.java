@@ -2,7 +2,9 @@ package fileManagement.TableElement;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * Table class that stores information about the file in an object
+ */
 public class Table {
     private String tableName;
     private int columnCount;

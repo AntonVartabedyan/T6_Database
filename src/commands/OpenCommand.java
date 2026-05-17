@@ -5,7 +5,9 @@ import fileManagement.TableManager;
 import main.Controller;
 
 import java.util.List;
-
+/**
+ * Command class to open a database
+ */
 public class OpenCommand implements CommandInterface{
     private TableManager tableManager;
     private CatalogueManager catalogueManager;

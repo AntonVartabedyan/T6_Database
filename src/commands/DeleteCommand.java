@@ -6,7 +6,9 @@ import main.Application;
 import main.Controller;
 
 import java.util.List;
-
+/**
+ * Command class to delete rows under circumstances
+ */
 public class DeleteCommand implements CommandInterface{
     private TableManager tableManager;
     private CatalogueManager catalogueManager;

@@ -6,7 +6,9 @@ import main.Application;
 import main.Controller;
 
 import java.util.List;
-
+/**
+ * Command class to do counting under circumstances
+ */
 public class CountCommand implements CommandInterface{
     private TableManager tableManager;
     private List<String> commands;

@@ -6,7 +6,9 @@ import main.Application;
 import main.Controller;
 
 import java.util.List;
-
+/**
+ * Command class to export a file
+ */
 public class ExportCommand implements CommandInterface{
     private TableManager tableManager;
     private CatalogueManager catalogueManager;

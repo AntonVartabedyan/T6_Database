@@ -7,6 +7,9 @@ import main.Controller;
 
 import java.util.List;
 
+/**
+ * Command to add column to a table
+ */
 public class AddColumnCommand implements CommandInterface{
     private TableManager tableManager;
     private List<String> commands;

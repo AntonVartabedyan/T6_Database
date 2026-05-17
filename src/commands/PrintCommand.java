@@ -7,7 +7,9 @@ import main.Controller;
 import pagination.Paginator;
 
 import java.util.List;
-
+/**
+ * Command class to print out a table's contents
+ */
 public class PrintCommand implements CommandInterface{
     private TableManager tableManager;
     private CatalogueManager catalogueManager;

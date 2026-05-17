@@ -6,7 +6,9 @@ import main.Application;
 import main.Controller;
 
 import java.util.List;
-
+/**
+ * Command class to update rows under circumstances
+ */
 public class UpdateCommand implements CommandInterface{
     private TableManager tableManager;
     private List<String> commands;

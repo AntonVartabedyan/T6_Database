@@ -5,7 +5,9 @@ import fileManagement.TableManager;
 import main.Controller;
 
 import java.util.List;
-
+/**
+ * Command class save the database in a different file
+ */
 public class SaveAsCommand implements CommandInterface{
     private TableManager tableManager;
     private CatalogueManager catalogueManager;
