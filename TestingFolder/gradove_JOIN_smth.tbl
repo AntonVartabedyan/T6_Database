@@ -1,12 +1,12 @@
 gradove_JOIN_smth
-8
-int String float string String String int int 
-newCol Value newCol something testingLast Cars NumberOfPeopleInThem newCol 
-2; Burgas; 15; NULL; NULL; Ferrari; 2; NULL; 
-2; Burgas; 15; NULL; NULL; Ferrari; 2; NULL; 
-2; Burgas; 15; NULL; NULL; Ferrari; 2; NULL; 
-2; Burgas; 15; NULL; NULL; Ferrari; 2; NULL; 
-3; Plovdiv; NULL; NULL; NULL; Mercedez Benz; 3; NULL; 
-3; Plovdiv; NULL; NULL; NULL; Mercedez Benz; 3; NULL; 
-3; Plovdiv; NULL; NULL; NULL; Mercedez Benz; 3; NULL; 
-3; Plovdiv; NULL; NULL; NULL; Mercedez Benz; 3; NULL; 
+9
+int String float string String Float String int int 
+newCol Value newCol something testingLast newTestingColumn Cars NumberOfPeopleInThem newCol 
+2; Burgas; 15; NULL; NULL; NULL; Ferrari; 2; NULL; 
+2; Burgas; 15; NULL; NULL; NULL; Ferrari; 2; NULL; 
+2; Burgas; 15; NULL; NULL; NULL; Ferrari; 2; NULL; 
+2; Burgas; 15; NULL; NULL; NULL; Ferrari; 2; NULL; 
+3; Plovdiv; 1; Candidate; NULL; NULL; Mercedez Benz; 3; NULL; 
+3; Plovdiv; 1; Candidate; NULL; NULL; Mercedez Benz; 3; NULL; 
+3; Plovdiv; 1; Candidate; NULL; NULL; Mercedez Benz; 3; NULL; 
+3; Plovdiv; 1; Candidate; NULL; NULL; Mercedez Benz; 3; NULL; 

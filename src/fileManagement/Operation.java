@@ -1,4 +1,4 @@
-package main;
+package fileManagement;
 
 public enum Operation {
     SUM,

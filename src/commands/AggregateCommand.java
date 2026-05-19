@@ -1,10 +1,9 @@
 package commands;
 
-import fileManagement.CatalogueManager;
 import fileManagement.TableManager;
 import main.Application;
 import main.Controller;
-import main.Operation;
+import fileManagement.Operation;
 
 import java.util.List;
 /**

@@ -1,10 +1,10 @@
 gradove
 6
-int String float string String String 
-newCol Value newCol something testingLast newColIDK 
-1; Varna; NULL; NULL; NULL; NULL; 
+int String float string String Float 
+newCol Value newCol something testingLast newTestingColumn 
+1; Varna; 1; Candidate; NULL; NULL; 
 2; Burgas; 15; NULL; NULL; NULL; 
-3; Plovdiv; NULL; NULL; NULL; NULL; 
-4; Sofia; NULL; NULL; NULL; NULL; 
+3; Plovdiv; 1; Candidate; NULL; NULL; 
 6; Ruse; -2.51; NULL; NULL; NULL; 
-7; Vana; +5.123; NULL; NULL; NULL; 
+4; Sofia; 1; Candidate; NULL; NULL; 
+7; Silistra; 5; Banned; NULL; NULL; 
